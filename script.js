@@ -1,36 +1,32 @@
-async function getWeather() {
-  const location = document.getElementById("locationInput").value.trim();
-  const resultDiv = document.getElementById("weatherResult");
+function getWeather() {
+  const place = document.getElementById("placeInput").value.trim();
+  const country = document.getElementById("countryInput").value.trim();
+  const resultDiv = document.getElementById("result");
 
-  if (!location) {
-    resultDiv.innerHTML = "❗ Please enter a location.";
+  if (!place || !country) {
+    resultDiv.innerHTML = "⚠️ Please enter both city and country.";
     return;
   }
 
+  const query = `${place},${country}`;
   const apiKey = "ec3e5b17856641db86d113551252405";
-  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`;
+  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(query)}&aqi=yes`;
 
-  try {
-    resultDiv.innerHTML = "🔄 Fetching weather data...";
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Location not found or API error.");
-    }
-
-    const data = await response.json();
-    const tempC = data.current.temp_c;
-    const condition = data.current.condition.text;
-    const feelsLike = data.current.feelslike_c;
-    const humidity = data.current.humidity;
-
-    resultDiv.innerHTML = `
-      <h3>📍 Weather in ${data.location.name}, ${data.location.country}</h3>
-      <p><strong>🌡️ Temperature:</strong> ${tempC} °C</p>
-      <p><strong>🤔 Feels Like:</strong> ${feelsLike} °C</p>
-      <p><strong>🌥️ Condition:</strong> ${condition}</p>
-      <p><strong>💧 Humidity:</strong> ${humidity}%</p>
-    `;
-  } catch (error) {
-    resultDiv.innerHTML = `❌ Error: ${error.message}`;
-  }
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) throw new Error("Weather not found.");
+      return response.json();
+    })
+    .then((data) => {
+      resultDiv.innerHTML = `
+        <h2>🌍 ${data.location.name}, ${data.location.country}</h2>
+        <p>🌡️ Temperature: ${data.current.temp_c}°C</p>
+        <p>📊 Humidity: ${data.current.humidity}%</p>
+        <p>🌤️ Condition: ${data.current.condition.text}</p>
+      `;
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+      resultDiv.innerHTML = "⚠️ Unable to fetch weather data.";
+    });
 }
