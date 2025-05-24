@@ -10,7 +10,7 @@ function getWeather() {
 
   const query = `${place},${country}`;
   const apiKey = "ec3e5b17856641db86d113551252405";
-  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(query)}&aqi=yes`;
+  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(query)}&aqi=yes;
 
   fetch(url)
     .then((response) => {
