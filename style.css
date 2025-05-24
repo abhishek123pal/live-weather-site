@@ -21,7 +21,10 @@ body {
 input[type="text"] {
   padding: 10px;
   width: 80%;
+  font-size: 1rem;
+  
   border: 1px solid #ccc;
+  
   border-radius: 8px;
   margin-bottom: 15px;
 }
@@ -39,6 +42,14 @@ button {
 button:hover {
   background-color: #c10027;
 }
+.input{
+  .inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+  
 
 .result {
   margin-top: 20px;
